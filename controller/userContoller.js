@@ -14,5 +14,16 @@ module.exports = {
         } catch (err) {
             res.status(500).json({ error: err.message });
         }
+    },
+    getAllUser:async(req,res)=>{
+        try{
+            var users = await User.find();
+            res.status(201).json({ message: 'All user get successfully!' ,data:users});
+
+
+        }
+        catch (err) {
+            res.status(500).json({ error: err.message });
+        }
     }
 }
