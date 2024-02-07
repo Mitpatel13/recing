@@ -1,4 +1,4 @@
-const User =require('../models/users');
+const User =require('../controller/users');
 
 module.exports = {
     registerUser: async (req, res) => {
