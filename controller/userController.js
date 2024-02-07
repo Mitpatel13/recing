@@ -30,21 +30,22 @@ module.exports = {
 
     updateUser: async (req, res) => {
         try {
-            
             const adminUser = await User.findById(req.params.id);
-            if (!adminUser.isAdmin) {
-                return res.status(403).json({ error: 'Unauthorized access' });
+        if (!adminUser.isAdmin) {
+            return res.status(403).json({ error: 'Unauthorized access' });
+        }
+        const { id, ...userData } = req.body;
+        const user = await User.findById(id);
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        for (const key in userData) {
+            if (Object.hasOwnProperty.call(userData, key)) {
+                user[key] = userData[key];
             }
-            const { id, mobileNo } = req.body;
-            const user = await User.findById(id);
-
-            if (!user) {
-                return res.status(404).json({ error: 'User not found' });
-            }
-            user.mobileNo = mobileNo;
-            await user.save();
-
-            res.status(200).json({ message: 'User mobile number updated successfully' });
+        }
+        await user.save();
+            res.status(200).json({ message: 'User updated successfully' });
         } catch (err) {
             console.error(err);
             res.status(500).json({ error: 'Internal server error' });
