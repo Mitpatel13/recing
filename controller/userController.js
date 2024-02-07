@@ -68,5 +68,21 @@ module.exports = {
             console.error(err);
             res.status(500).json({ error: 'Internal server error' });
         }
+    },
+    updateProfile:async(req,res)=>{
+        const userId = req.params.id;
+        const updateData = req.body; 
+      
+        try {
+          const updatedUser = await User.findByIdAndUpdate(userId, updateData, { new: true });
+      
+          if (!updatedUser) {
+            return res.status(404).json({ error: 'User not found'});
+          }
+          res.status(200).json({ message: 'User profile updated successfully', data: updatedUser });
+        } catch (err) {
+          console.error(err);
+          res.status(500).json({ error: 'Internal server error' });
+       }
     }
 }
