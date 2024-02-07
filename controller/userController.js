@@ -14,20 +14,18 @@ module.exports = {
             await newUser.save();
             res.status(201).json({ message: 'User registered successfully!', data: newUser });
         } catch (err) {
-            console.error(err); // Log the error for debugging
+            console.error(err)
             res.status(500).json({ error: err.message });
         }
     },    
     getAllUser:async(req,res)=>{
-        try{
-            var users = await User.find();
-            res.status(200).json({ message: 'All user get successfully!' ,data:users});
-
-
-        }
-        catch (err) {
+        try {
+            const nonAdminUsers = await User.find({ isAdmin: false });
+        
+            res.status(200).json({ message: 'Non-admin users retrieved successfully!', data: nonAdminUsers });
+          } catch (err) {
             res.status(500).json({ error: err.message });
-        }
+          }
     },
 
     updateUser: async (req, res) => {
