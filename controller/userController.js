@@ -58,10 +58,11 @@ module.exports = {
                 return res.status(403).json({ error: 'Unauthorized access' });
             }
             const { id,} = req.body;
+            
+            const user = await User.findByIdAndDelete(id);
             if (!user) {
                 return res.status(404).json({ error: 'User not found' });
             }
-            const user = await User.findByIdAndDelete(id);
 
             res.status(200).json({ message: 'User deleted successfully' });
         } catch (err) {
